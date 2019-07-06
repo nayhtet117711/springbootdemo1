@@ -29,5 +29,5 @@ dependencies {
 	compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.2'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	compile group: 'redis.clients', name: 'jedis', version: '2.10.0'
-	
+	annotationProcessor("org.projectlombok:lombok")	
 }
