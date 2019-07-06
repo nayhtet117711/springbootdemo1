@@ -26,5 +26,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'mysql:mysql-connector-java'
+	compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.2'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	compile group: 'redis.clients', name: 'jedis', version: '2.10.0'
+	
 }

@@ -1,12 +1,7 @@
 package com.share.springboot1.controller;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
-
-import javax.websocket.server.PathParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,7 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.share.springboot1.model.Post;
+import com.share.springboot1.model.RedisPost;
 import com.share.springboot1.model.User;
+import com.share.springboot1.repo.RedisPostRepo;
+import com.share.springboot1.service.PostService;
 import com.share.springboot1.service.UserService;
 
 @RestController
@@ -28,6 +27,12 @@ public class UserController {
 	
 	@Autowired
 	UserService userService;
+	
+	@Autowired
+	PostService postService;
+	
+	@Autowired
+	RedisPostRepo redisPostRepo;
 	
 	public UserController() { }
 	
@@ -70,6 +75,19 @@ public class UserController {
 		return username;
 	}
 	
+	@PostMapping("/{username}/posts")
+	public Post createPost(@PathVariable("username")String username, @RequestBody Post post) {
+		Post resultPost = postService.savePost(username, post);
+		RedisPost rp = new RedisPost(resultPost);
+		// save rp to redis server
+		redisPostRepo.save(rp);
+		return resultPost;
+	}
+	
+	@GetMapping("/{username}/posts")
+	public List<Post> readPostOfUser(@PathVariable("username")String username ) {
+		return postService.readListByUsername(username);
+	}
 	
 }
 
